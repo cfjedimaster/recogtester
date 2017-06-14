@@ -65,12 +65,19 @@ function doForm(e) {
 }
 
 function clearResults() {
+	//https://stackoverflow.com/a/6243000/52160
+	googleResults.style.display = 'none';
+	ibmResults.style.display = 'none';
+	msResults.style.display = 'none';
 	googleResults.innerHTML = '';
 	ibmResults.innerHTML = '';
 	msResults.innerHTML = '';
 }
 
 function renderResults(data) {
+	googleResults.style.display = 'block';
+	ibmResults.style.display = 'block';
+	msResults.style.display = 'block';
 	renderGoogle(data.google);
 	renderIBM(data.ibm);
 	renderMS(data.ms);

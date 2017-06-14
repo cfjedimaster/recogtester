@@ -12,18 +12,20 @@
 	<h1>Image Recognition Tester</h1>
 	<form id="imageForm" method="post" enctype="multipart/form-data">
 	<p>
-	Select an image to use for testing:<br/>
+	Select an image to use for testing: 
 	<input type="file" name="testImage" id="testImage"><br/>
 	<input type="submit" value="Upload">
 	</p>
 	</form>
 	<img id="previewImage">
 
+	<br clear="all"/>
+
 	<div id="status"></div>
 
-	<div id="googleResults"></div>
-	<div id="ibmResults"></div>
-	<div id="msResults"></div>
+	<div id="googleResults" class="results" style="display:none"></div>
+	<div id="ibmResults" class="results" style="display:none"></div>
+	<div id="msResults" class="results" style="display:none"></div>
 
 	<script id="google-template" type="text/x-handlebars-template">
 	<h1>Google Results</h1>
@@ -183,7 +185,7 @@
 	<script id="ms-template" type="text/x-handlebars-template">
 	<h1>Microsoft Computer Vision Results</h1>
 	<p>
-		MS does a main analysis as well as a OCR check. THe report does not display OCR results. (Yet.)
+		MS does a main analysis as well as a OCR check. The report does not display OCR results. (Yet.)
 	</p>
 
 	<h3>Adult</h3>
