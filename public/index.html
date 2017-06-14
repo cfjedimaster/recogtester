@@ -57,10 +57,10 @@
 		{{#each faces}}
 		<p>
 			Basic Details:<br/>
-			Angry: {{this.anger}} (likelihood: {{this.angerLikelihood}})<br/>
+			Anger: {{this.anger}} (likelihood: {{this.angerLikelihood}})<br/>
 			Blurred: {{this.blurred}}<br/>
 			Confidence: {{this.confidence}}<br/>
-			Headware: {{this.headware}} (likelihood: {{this.headwareLikelihood}})<br/>
+			Headware: {{this.headwear}} (likelihood: {{this.headwearLikelihood}})<br/>
 			Joy: {{this.joy}} (likelihood: {{this.joyLikelihood}})<br/>
 			Sorrow: {{this.sorrow}} (likelihood: {{this.sorrowLikelihood}})<br/>
 			Surprise: {{this.surprise}} (likelihood: {{this.surpriseLikelihood}})<br/>
@@ -183,7 +183,7 @@
 	<script id="ms-template" type="text/x-handlebars-template">
 	<h1>Microsoft Computer Vision Results</h1>
 	<p>
-		MS does a main analysis as well as a OCR check.
+		MS does a main analysis as well as a OCR check. THe report does not display OCR results. (Yet.)
 	</p>
 
 	<h3>Adult</h3>
@@ -212,7 +212,52 @@
 		</ul>
 	Is Black and White? {{main.color.isBWImg}}
 	</p>
-	
+
+	<h3>Description</h3>
+
+		<h4>Captions</h4>
+		<ul>
+			{{#each main.description.captions}}
+			<li>{{this.text}} (confidence: {{this.confidence}})</li>
+			{{/each}}
+		</ul>
+		<h4>Tags</h4>
+		<ul>
+			{{#each main.description.tags}}
+			<li>{{this}}</li>
+			{{/each}}
+		</ul>
+
+	<h3>Faces</h3>
+	<p><i>Note - report won't show reported facial positions.</i></p>
+	{{#each main.faces}}
+		<p>
+			Age: {{this.age}}<br/>
+			Gender: {{this.gender}}<br/>
+		</p>
+	{{else}}
+	<p>No faces found.</p>
+	{{/each}}
+
+	<h3>Type of Image</h3>
+	<p>
+		Is it clip art (and if so, what type)? {{main.imageType.ctType}}<br/>
+		Is it a line drawing? {{main.imageType.lineDrawingType}}<br/>
+	</p>
+
+	<h3>Metadata</h3>
+	<p>
+		Format: {{main.metadata.format}}<br/>
+		Height: {{main.metadata.height}}<br/>
+		Width: {{main.metadata.width}}<br/>
+	</p>
+
+	<h3>Tags</h3>
+	<ul>
+		{{#each main.tags}}
+			<li>{{this.name}} (confidence: {{this.confidence}})</li>
+		{{/each}}
+	</ul>
 	</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
