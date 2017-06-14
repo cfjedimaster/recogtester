@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+	<body>
+
+	<h1>Image Recognition Tester</h1>
+	<form id="imageForm" method="post" enctype="multipart/form-data">
+	<p>
+	Select an image to use for testing:<br/>
+	<input type="file" name="testImage" id="testImage"><br/>
+	<input type="submit" value="Upload">
+	</p>
+	</form>
+	<img id="previewImage">
+
+	<div id="status"></div>
+	
+	<div id="googleResults"></div>
+
+	<script id="google-template" type="text/x-handlebars-template">
+	<h1>Google Results</h1>
+	<p>
+		Google attempts to find results across the following types: crops (hints for where to crop), faces, labels, 
+		landmarks, logos, properties, safeSearch, similar, and text.
+	</p>
+
+	<h3>Crops</h3>
+	{{#if crops}}
+		<ol>
+		{{#each crops}}
+		<li>
+			<ul>
+			{{#each this}}
+			<li>{{this.x}},{{y}}</li>
+			{{/each}}
+			</ul>
+		</li>
+		{{/each}}
+		</ol>
+	{{else}}
+	<p>No crops.</p>
+	{{/if}}
+
+	<h3>Faces</h3>
+	{{#if faces}}
+		<p>
+			<i>Note, this report is now showing: angles, bounds, and features.</i>
+		</p>
+		{{#each faces}}
+		<p>
+			Basic Details:<br/>
+			Angry: {{this.anger}} (likelihood: {{this.angerLikelihood}})<br/>
+			Blurred: {{this.blurred}}<br/>
+			Confidence: {{this.confidence}}<br/>
+			Headware: {{this.headware}} (likelihood: {{this.headwareLikelihood}})<br/>
+			Joy: {{this.joy}} (likelihood: {{this.joyLikelihood}})<br/>
+			Sorrow: {{this.sorrow}} (likelihood: {{this.sorrowLikelihood}})<br/>
+			Surprise: {{this.surprise}} (likelihood: {{this.surpriseLikelihood}})<br/>
+			Underexposed: {{this.underExposed}} (likelihood: {{this.underExposedLikelihood}})<br/>
+		</p>
+		{{/each}}
+	{{else}}
+	<p>No faces.</p>
+	{{/if}}
+	
+	<h3>Labels</h3>
+	{{#if labels}}
+		<ul>
+		{{#each labels}}
+		<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No labels.</p>
+	{{/if}}
+
+	<h3>Landmarks</h3>
+	{{#if landmarks}}
+		<p><i>This is the <b>non</b> verbose response. Verbose version will include location GPS values.</i></p>
+		<ul>
+		{{#each landmarks}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No landmarks.</p>
+	{{/if}}
+
+	<h3>Logos</h3>
+	{{#if logos}}
+		<p><i>This is the <b>non</b> verbose response.</i></p>
+		<ul>
+		{{#each logos}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No logos.</p>
+	{{/if}}
+
+	<h3>Properties</h3>
+	{{#if properties}}
+		<p><i>Currently this just supports dominent colors. This is the <b>non</b> verbose response.</i></p>
+		<h4>Colors</h4>
+		<ul>
+		{{#each properties.colors}}
+			<li style="background-color:#{{this}}">{{this}}</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No properties</p>
+	{{/if}}
+
+	<h3>SafeSearch</h3>
+	{{#if safeSearch}}
+		<p>
+			Adult? {{safeSearch.adult}}<br/>
+			Medical? {{safeSearch.medical}}<br/>
+			Spoof? {{safeSearch.spoof}}<br/>
+			Violence? {{safeSearch.violence}}<br/>
+		</p>
+	{{else}}
+	<p>No safeSearch report.</p>
+	{{/if}}
+
+	<h3>Similar</h3>
+	{{#if similar}}
+		<ul>
+			{{#each similar}}
+			<li><a href="{{this}}" title="{{this}}"><img src="{{this}}" class="googleSimilarThumb"></a></li>
+			{{/each}}
+		</ul>
+	{{else}}
+	<p>No similar data.</p>
+	{{/if}}
+
+	<h3>Text</h3>
+	{{#if text}}
+		<ul>
+		{{#each text}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No text.</p>
+	{{/if}}
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+	<script src="/js/app.js"></script>
+	</body>
+</html>
