@@ -20,8 +20,9 @@
 	<img id="previewImage">
 
 	<div id="status"></div>
-	
+
 	<div id="googleResults"></div>
+	<div id="ibmResults"></div>
 
 	<script id="google-template" type="text/x-handlebars-template">
 	<h1>Google Results</h1>
@@ -50,7 +51,7 @@
 	<h3>Faces</h3>
 	{{#if faces}}
 		<p>
-			<i>Note, this report is now showing: angles, bounds, and features.</i>
+			<i>Note, this report is not showing: angles, bounds, and features.</i>
 		</p>
 		{{#each faces}}
 		<p>
@@ -150,8 +151,34 @@
 	{{else}}
 	<p>No text.</p>
 	{{/if}}
+	</script>
+
+	<script id="ibm-template" type="text/x-handlebars-template">
+	<h1>IBM Watson Results</h1>
+	<p>
+		IBM attempts to classify an image and find faces.
+	</p>
+
+	<h3>Classifiers</h3>
+	{{#each main.classifiers}}
+		<ul>
+			{{#each this.classes}}
+			<li>{{this.class}} (score: {{this.score}})</li>
+			{{/each}}
+		</ul>
+	{{/each}}
+
+	<h3>Faces</h3>
+	<p><i>Note that location data is returned as well.</i></p>
+	{{#each faces.faces}}
+	<p>
+		Gender: {{this.gender.gender}} (score: {{this.gender.score}})<br/>
+		Age: {{this.age.min}} to {{this.age.max}} (score: {{this.age.score}})<br/>
+	</p>
+	{{/each}}
 
 	</script>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
 	<script src="/js/app.js"></script>
 	</body>

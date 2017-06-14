@@ -6,6 +6,7 @@ const path = require('path');
 const creds = require('./creds.json');
 
 const google = require('./google');
+const ibm = require('./ibm');
 
 app.use(express.static('public'));
 
@@ -25,17 +26,18 @@ app.post('/test', (req, res) => {
 		now we go through N services
 		*/
 
-		google.doProcess(theFile, creds.google).then((results) => {
-			console.log(chalk.green('Success from Google'));
-			res.send({result:{
-					'google':results
-				}
-			});
+		let gProm = google.doProcess(theFile, creds.google);
+		let iProm = ibm.doProcess(theFile, creds.ibm);
 
-		})
-		.catch((err) => {
-			console.log(chalk.red('Error from Google:'+err));
+		Promise.all([gProm, iProm]).then((results) => {
+			res.send({result:{
+				'google':results[0],
+				'ibm':results[1]
+			}});
+		}).catch((err) => {
+			console.log('Failures', err);	
 		});
+
 
 
 	});
@@ -45,3 +47,11 @@ app.post('/test', (req, res) => {
 app.listen(3000, () => {
 	console.log(chalk.green('Listening on port 3000'));
 });
+
+/*
+(results) => {
+			console.log(chalk.green('Success from Google'));
+			res.send({result:{
+					'google':results
+				}
+			});*/
