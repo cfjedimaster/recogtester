@@ -12,6 +12,8 @@ function doProcess(path, auth) {
 
 	return new Promise((resolve, reject) => {
 
+		console.log('Attempting Microsoft recog');
+
 		let formData = {
 			theFile:fs.createReadStream(path)
 		}

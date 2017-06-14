@@ -23,6 +23,7 @@
 
 	<div id="googleResults"></div>
 	<div id="ibmResults"></div>
+	<div id="msResults"></div>
 
 	<script id="google-template" type="text/x-handlebars-template">
 	<h1>Google Results</h1>
@@ -177,6 +178,41 @@
 	</p>
 	{{/each}}
 
+	</script>
+
+	<script id="ms-template" type="text/x-handlebars-template">
+	<h1>Microsoft Computer Vision Results</h1>
+	<p>
+		MS does a main analysis as well as a OCR check.
+	</p>
+
+	<h3>Adult</h3>
+	<p>
+	Is Adult Content? {{main.adult.isAdultContent}} (score: {{main.adult.adultScore}})<br/>
+	Is Racy Content? {{main.adult.isRacyContent}} (score: {{main.adult.racyScore}})<br/>
+	</p>
+
+	<h3>Categories</h3>
+	<ul>
+	{{#each main.categories}}
+		<li>{{this.name}} (score: {{this.score}})</li>
+	{{/each}}
+	</ul>
+
+	<h3>Color</h3>
+	<p>
+	Accent Color: <span style="background-color:#{{main.color.accentColor}}">{{main.color.accentColor}}</span><br/>
+	Dominant Color Background: {{main.color.dominantColorBackground}}<br/>
+	Dominant Color Foreground: {{main.color.dominantColorForeground}}<br/>
+	Dominant Colors:
+		<ul>
+		{{#each main.color.dominantColors}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	Is Black and White? {{main.color.isBWImg}}
+	</p>
+	
 	</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
