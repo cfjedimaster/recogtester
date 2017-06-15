@@ -15,3 +15,4 @@ To test, you need the proper authentication information for each of the supporte
 			"key":"..."
 	}
 
+You can find a sample of the output here: [samplereport.pdf](./samplereport.pdf)
