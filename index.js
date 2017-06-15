@@ -50,11 +50,3 @@ app.post('/test', (req, res) => {
 app.listen(3000, () => {
 	console.log(chalk.green('Listening on port 3000'));
 });
-
-/*
-(results) => {
-			console.log(chalk.green('Success from Google'));
-			res.send({result:{
-					'google':results
-				}
-			});*/
