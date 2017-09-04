@@ -52,7 +52,7 @@ function doProcess(path, auth) {
 				main:values[0],
 				ocr:values[1]
 			};
-			resolve(result);
+            resolve({"ms":result});
 		});
 
 	});

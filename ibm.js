@@ -40,7 +40,7 @@ function doProcess(path, auth) {
 				main:values[0].images[0],
 				faces:values[1].images[0]
 			};
-			resolve(result);
+            resolve({"ibm":result});
 		});
 
 	});

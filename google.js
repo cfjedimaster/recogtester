@@ -17,7 +17,7 @@ function doProcess(path,auth) {
 				'similar', 'text']
 		})
 		.then((results) => {
-			resolve(results[0]);
+            resolve({"google":results[0]});
 		})
 		.catch((err) => {
 			console.error('ERROR:', err);

@@ -23,6 +23,7 @@
 
 	<div id="status"></div>
 
+	<div id="amazonResults" class="results" style="display:none"></div>
 	<div id="googleResults" class="results" style="display:none"></div>
 	<div id="ibmResults" class="results" style="display:none"></div>
 	<div id="msResults" class="results" style="display:none"></div>
@@ -260,6 +261,93 @@
 			<li>{{this.name}} (confidence: {{this.confidence}})</li>
 		{{/each}}
 	</ul>
+	</script>
+
+	<script id="amazon-template" type="text/x-handlebars-template">
+	<h1>Amazon Results</h1>
+	<p>
+		Amazon attempts to find results across the following types: faces, labels, moderation labels, and celebrities.
+	</p>
+
+	<h3>Faces</h3>
+	{{#if faces.FaceDetails}}
+		<p>
+			<i>Note, this report is not showing: BoundingBox, Landmarks (location), or Pose</i>
+		</p>
+		{{#each faces.FaceDetails}}
+		<p>
+			Brightness: {{ this.Quality.Brightness }}<br/>
+			Sharpness: {{ this.Quality.Sharpness }}
+		</p>
+
+		<p>
+			Landmarks found: 
+			<ul>
+			{{#each this.Landmarks}}
+			<li>{{this.Type}}</li>
+			{{/each}}
+			</ul>
+		</p>
+
+		{{/each}}
+
+	{{else}}
+	<p>No faces.</p>
+	{{/if}}
+
+	<h3>Labels</h3>
+	{{#if labels.Labels}}
+		<ul>
+		{{#each labels.Labels}}
+		<li>{{this.Name}} (confidence: {{this.Confidence}})</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No labels.</p>
+	{{/if}}
+
+	<h3>Moderation Labels</h3>
+	{{#if modlabels.ModLabels}}
+		<ul>
+		{{#each modlabels.ModLabels}}
+		<li>{{this.Name}} (confidence: {{this.Confidence}})</li>
+		{{/each}}
+		</ul>
+	{{else}}
+	<p>No moderation labels.</p>
+	{{/if}}
+
+	<h3>Celebrities</h3>
+	{{#if celebs.CelebrityFaces}}
+		<p>
+			<i>Note, this report includes uncecognized faces, but I believe it is the same as the Face report so they will not be displayed below. Also, I'm hiding the same information (BoundingBox, etc) for celebs.</i>
+		</p>
+		{{#each celebs.CelebrityFaces}}
+		<p>
+			Name: {{ this.Name }}<br/>
+			{{#if this.Urls}}
+				{{#each this.Urls}}
+					<a href="http://{{this}}" target="_new">{{this}}</a><br/>
+				{{/each}}
+			{{/if}}
+			Brightness: {{ this.Quality.Brightness }}<br/>
+			Sharpness: {{ this.Quality.Sharpness }}
+		</p>
+
+		<p>
+			Landmarks found: 
+			<ul>
+			{{#each this.Landmarks}}
+			<li>{{this.Type}}</li>
+			{{/each}}
+			</ul>
+		</p>
+
+		{{/each}}
+
+	{{else}}
+	<p>No celebrities.</p>
+	{{/if}}
 	</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>

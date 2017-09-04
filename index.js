@@ -8,6 +8,7 @@ const creds = require('./creds.json');
 const google = require('./google');
 const ibm = require('./ibm');
 const microsoft = require('./microsoft');
+const amazon = require('./amazon');
 
 app.use(express.static('public'));
 
@@ -26,17 +27,23 @@ app.post('/test', (req, res) => {
 		/*
 		now we go through N services
 		*/
+		let services = [];
+		services.push(google.doProcess(theFile, creds.google));
+		services.push(ibm.doProcess(theFile, creds.ibm));
+		services.push(microsoft.doProcess(theFile, creds.microsoft));
+		services.push(amazon.doProcess(theFile, creds.amazon));
 
-		let gProm = google.doProcess(theFile, creds.google);
-		let iProm = ibm.doProcess(theFile, creds.ibm);
-		let mProm = microsoft.doProcess(theFile, creds.microsoft);
+		Promise.all(services).then((results) => {
+			/*
+			each array result is LABEL:data
+			*/
+			let iResult = {};
+			results.forEach((result) => {
+				let label = Object.keys(result)[0];
+				iResult[label] = result[label];
+			});
 
-		Promise.all([gProm, iProm, mProm]).then((results) => {
-			res.send({result:{
-				'google':results[0],
-				'ibm':results[1],
-				'ms':results[2]
-			}});
+			res.send({result:iResult});
 		}).catch((err) => {
 			console.log('Failures', err);	
 		});
