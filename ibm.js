@@ -6,7 +6,6 @@ function doProcess(path, auth) {
 
 		console.log("Attempting IBM recog");
 		let visual_recognition = new VisualRecognitionV3({
-			url:'https://gateway.watsonplatform.net/visual-recognition/api',
 			iam_apikey: auth.api_key,
 			version: '2018-03-19'
 		});
