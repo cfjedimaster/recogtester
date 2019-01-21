@@ -52,6 +52,7 @@ function doProcess(path, auth) {
 				main:values[0],
 				ocr:values[1]
 			};
+			console.log('resolving from ms');
             resolve({"ms":result});
 		});
 

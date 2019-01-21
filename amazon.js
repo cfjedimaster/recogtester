@@ -1,4 +1,3 @@
-var request = require('request');
 var fs = require('fs');
 var AWS = require('aws-sdk');
 
@@ -64,6 +63,7 @@ function doProcess(path, auth) {
                 modlabels:modlabels,
                 celebs:celebs
             }
+            console.log('resolving from amazon');
             resolve({"amazon":result});
         });
 	});

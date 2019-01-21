@@ -22,3 +22,8 @@ To test, you need the proper authentication information for each of the supporte
 	}
 
 You can find a sample of the output here: [samplereport.pdf](./samplereport.pdf)
+
+History
+===
+
+1/21/2019: Updated thanks to help/fixes from Surya Vikas.

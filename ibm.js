@@ -44,6 +44,7 @@ function doProcess(path, auth) {
 				main: values[0].images[0],
 				faces: values[1].images[0]
 			};
+			console.log('resolving from ibm');
 			return resolve({ ibm: result });
 		})
 		.catch(e => {

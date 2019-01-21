@@ -31,116 +31,147 @@
 		<div v-html="status"></div>
 
 		<div v-if="google" class="results">
-			<h1>Google Results</h1>
-			<p>
-				Google attempts to find results across the following types: crops (hints for where to crop), faces, labels, 
-				landmarks, logos, properties, safeSearch, similar, and text.
-			</p>
-		
-			<h3>Crops</h3>
+            <h1>Google Results</h1>
+            <p>
+                Google attempts to find results across the following types: crops (hints for where to crop), faces, labels, 
+                landmarks, logos, properties, safeSearch, similar, and text.
+            </p>
+        
+            <h3>Crops</h3>
 
-			<div v-if="google.crops">
-				<ol>
-				<li v-for="cropset in google.crops">
-					<ul>
-					<li v-for="crop in cropset">{{crop.x}},{{crop.y}}</li>
-					</ul>
-				</li>
-				</ol>
-			</div><div v-else>
-				<p>No crops.</p>
-			</div>
+            <div v-if="google.crops.cropHintsAnnotation.cropHints">
+                <ol>
+                    <li v-for="cropset in google.crops.cropHintsAnnotation.cropHints">
+                        <ul>
+                            <div v-for="crop in cropset.boundingPoly.vertices">
+                                <li>{{(crop.x}}, {{crop.y)}}</li>
+                            </div>
+                        </ul>
+                    </li>
+                </ol>
+            </div><div v-else>
+                <p>No crops.</p>
+            </div>
 
-			<h3>Faces</h3>
-			<div v-if="google.faces">
-				<p>
-					<i>Note, this report is not showing: angles, bounds, and features.</i>
-				</p>
+            <h3>Faces</h3>
+            <div v-if="google.faces.faceAnnotations.length">
+                <p>
+                    <i>Note, this report is not showing: angles, bounds, and features.</i>
+                </p>
+                <p v-for="faceAnnotation in google.faces.faceAnnotations">
+                    Basic Details:<br/>
+                    Anger: {{faceAnnotation.angerLikelihood}}<br/>
+                    Blurred: {{faceAnnotation.blurredLikelihood}}<br/>
+                    Confidence: {{faceAnnotation.detectionConfidence}}<br/>
+                    Headware: {{faceAnnotation.headwearLikelihood}}<br/>
+                    Joy: {{faceAnnotation.joyLikelihood}}<br/>
+                    Sorrow: {{faceAnnotation.sorrowLikelihood}}<br/>
+                    Surprise: {{faceAnnotation.surpriseLikelihood}}<br/>
+                    Underexposed: {{faceAnnotation.underExposedLikelihood}}<br/>
+                </p>
+            </div><div v-else>
+                <p>No faces.</p>
+            </div>
 
-				<p v-for="face in google.faces">
-					Basic Details:<br/>
-					Anger: {{face.anger}} (likelihood: {{face.angerLikelihood}})<br/>
-					Blurred: {{face.blurred}}<br/>
-					Confidence: {{face.confidence}}<br/>
-					Headware: {{face.headwear}} (likelihood: {{face.headwearLikelihood}})<br/>
-					Joy: {{face.joy}} (likelihood: {{face.joyLikelihood}})<br/>
-					Sorrow: {{face.sorrow}} (likelihood: {{face.sorrowLikelihood}})<br/>
-					Surprise: {{face.surprise}} (likelihood: {{face.surpriseLikelihood}})<br/>
-					Underexposed: {{face.underExposed}} (likelihood: {{face.underExposedLikelihood}})<br/>
-				</p>
-			</div><div v-else>
-				<p>No faces.</p>
-			</div>
+            <h3>Labels</h3>
+            <div v-if="google.labelP.labelAnnotations">
+                <ul>
+                <li v-for="labelAnnotation in google.labelP.labelAnnotations">{{labelAnnotation.description}} (score: {{labelAnnotation.score}})</li>
+                </ul>
+            </div><div v-else>
+                <p>No labels.</p>
+            </div>
 
-			<h3>Labels</h3>
-			<div v-if="google.labels.length">
-				<ul>
-				<li v-for="label in google.labels">{{label}}</li>
-				</ul>
-			</div><div v-else>
-				<p>No labels.</p>
-			</div>
+            <h3>Landmarks</h3>
+            <div v-if="google.landmark.landmarkAnnotations.length">
+                <p><i>This is the <b>non</b> verbose response. Verbose version will include location GPS values.</i></p>
+                <ol>
+                    <li v-for="landmarkAnnotation in google.landmark.landmarkAnnotations">
+                        <ul>
+                            <div v-for="location in landmarkAnnotation.locations">
+                                <li>{{landmarkAnnotation.description}} (score: {{landmarkAnnotation.score}})</li>
+                                <li>latitude: {{location.latLng.latitude}} longitude: {{location.latLng.longitude}}</li>
+                            </div>
+                        </ul>
+                    </li>
+                </ol>
+            </div><div v-else>
+                <p>No landmarks.</p>
+            </div>
+        
+            <h3>Logos</h3>
+            <div v-if="google.logo.logoAnnotations.logos">
+                <p><i>This is the <b>non</b> verbose response.</i></p>
+                <ul>
+                    <li v-for="logoAnnotation in google.logo.logoAnnotations">{{logoAnnotation.description}} (score: {{logoAnnotation.score}})</li>
+                </ul>
+            </div><div v-else>
+                <p>No logos.</p>
+            </div>
 
-			<h3>Landmarks</h3>
-			<div v-if="google.landmarks.length">
-				<p><i>This is the <b>non</b> verbose response. Verbose version will include location GPS values.</i></p>
-				<ul>
-					<li v-for="landmark in google.landmarks">{{landmark}}</li>
-				</ul>
-			</div><div v-else>
-				<p>No landmarks.</p>
-			</div>
-		
-			<h3>Logos</h3>
-			<div v-if="google.logos.length">
-				<p><i>This is the <b>non</b> verbose response.</i></p>
-				<ul>
-					<li v-for="logo in google.logos">{{logo}}</li>
-				</ul>
-			</div><div v-else>
-				<p>No logos.</p>
-			</div>
-
-			<h3>Properties</h3>
-			<div v-if="google.properties.length">
-				<p><i>Currently this just supports dominent colors. This is the <b>non</b> verbose response.</i></p>
-				<h4>Colors</h4>
-				<ul>
-					<li v-for="color in google.properties.colors" v-bind:style="{ backgroundColor:'#'+color }">{{color}}</li>
-				</ul>
-			</div><div v-else>
-			<p>No properties</p>
-			</div>
-		
-			<h3>SafeSearch</h3>
-			<div v-if="google.safeSearch">
-				<p>
-					Adult? {{google.safeSearch.adult}}<br/>
-					Medical? {{google.safeSearch.medical}}<br/>
-					Spoof? {{google.safeSearch.spoof}}<br/>
-					Violence? {{google.safeSearch.violence}}<br/>
-				</p>
-			</div><div v-else>
-			<p>No safeSearch report.</p>
-			</div>
-		
-			<h3>Similar</h3>
-			<div v-if="google.similar.length">
-				<ul>
-					<li v-for="sim in google.similar"><a v-bind:href="sim" v-bind:title="sim"><img v-bind:src="sim" class="googleSimilarThumb"></a></li>
-				</ul>
-			</div><div v-else>
-			<p>No similar data.</p>
-			</div>
-		
-			<h3>Text</h3>
-			<div v-if="google.text.length">
-				<ul>
-					<li v-for="text in google.text">{{text}}</li>
-				</ul>
-			</div><div v-else>
-			<p>No text.</p>
-			</div>
+            <h3>Properties</h3>
+            <div v-if="google.properties.imagePropertiesAnnotation.dominantColors.colors">
+                <p><i>Currently this just supports dominent colors. This is the <b>non</b> verbose response.</i></p>
+                <h4>Colors</h4>
+                <ul>
+                    <li v-for="colr in google.properties.imagePropertiesAnnotation.dominantColors.colors">RGB values: {{colr.color.red}},{{colr.color.green}},{{colr.color.blue}}</li>
+                </ul>
+            </div><div v-else>
+            <p>No properties</p>
+            </div>
+        
+            <h3>SafeSearch</h3>
+            <div v-if="google.safe.safeSearchAnnotation">
+                <p>
+                    Adult? {{google.safe.safeSearchAnnotation.adult}}<br/>
+                    Medical? {{google.safe.safeSearchAnnotation.medical}}<br/>
+                    Spoof? {{google.safe.safeSearchAnnotation.spoof}}<br/>
+                    Violence? {{google.safe.safeSearchAnnotation.violence}}<br/>
+                    Racy? {{google.safe.safeSearchAnnotation.racy}}<br/>
+                </p>
+            </div><div v-else>
+            <p>No safeSearch report.</p>
+            </div>
+        
+            <h3>Web Detection</h3>
+            <div v-if="google.web.webDetection.fullMatchingImages">
+                <ul>
+                    <li v-for="webdetect in google.web.webDetection.fullMatchingImages"><a v-bind:href="webdetect.url" v-bind:title="webdetect.url"><img v-bind:src="webdetect.url" class="googleSimilarThumb"></a></li>
+                </ul>
+            </div><div v-else>
+            <p>No similar data.</p>
+            </div>
+        
+            <h3>Text</h3>
+            <div v-if="google.texts.textAnnotations">
+                <ul>
+                    <li v-for="textAnnotation in google.texts.textAnnotations">{{textAnnotation.description}}</li>
+                </ul>
+            </div>
+            <div v-else>
+            <p>No text.</p>
+            </div>
+            
+            <h3>Document Text</h3>
+            <p>Document Text Detection performs Optical Character Recognition. This feature detects dense document text in an image.</p>
+            <div v-if="google.docTxts.fullTextAnnotation">
+                <ul>
+                    <li>{{google.docTxts.fullTextAnnotation.text}}</li>
+                </ul>
+            </div>
+            <div v-else>
+            <p>No document text.</p>
+            </div>
+            
+            <h3>Localized Objects</h3>
+            <div v-if="google.loc_objects.localizedObjectAnnotations">
+                <ul>
+                    <li v-for="lObjs in google.loc_objects.localizedObjectAnnotations">{{lObjs.name}}</li>
+                </ul>
+            </div>
+            <div v-else>
+            <p>No Objects.</p>
+            </div>
 
 		</div>
 
